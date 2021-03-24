@@ -1,28 +1,28 @@
 import axios from 'axios'
 import React, {useState, useEffect} from 'react'
+import {useQuery} from 'react-query'
+
 
 const Lobby = () => {
 
-const [onlinePlayers, setOnlinePlayers] = useState([])
+// const [onlinePlayers, setOnlinePlayers] = useState([])
 
-useEffect(()=>{
-    axios.get('http://localhost:4343/players/logged-in')
-    .then(res=>{
-        console.log(res)
-        setOnlinePlayers(res.data)
-    })
-    .catch(err=>{
-        console.log(err)
-    })
-}, [])
+
+const { isLoading, error, data } = useQuery('repoData', () =>
+fetch('http://localhost:4343/players/logged-in').then(res =>
+  res.json()
+)
+)
 
     return (
         <div>
-            {onlinePlayers.map(pl=>{
+            {isLoading ? <p>LOADING</p> : error ? <p>AN ERROR HAS OCCURED</p> : ""}
+            { data && data.map(pl=>{
                 return (
-                    <p>{pl.name}</p>
+                    <p key={pl.id}>{pl.name}</p>
                 )
-            })}
+            })
+        }
         </div>
     )
 }

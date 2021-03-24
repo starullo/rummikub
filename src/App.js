@@ -5,6 +5,10 @@ import Login from './Login'
 import Register from './Register'
 import Lobby from './Lobby'
 
+import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
+ 
+const queryClient = new QueryClient()
+
 function App() {
 
 // useEffect(()=>{
@@ -17,7 +21,9 @@ function App() {
       <Link to="/login">Login</Link>
       <Route component={Login} exact path="/login"/>
       <Route component={Register} exact path="/register"/>
-      <Route component={Lobby} exact path="/lobby"/>
+      <QueryClientProvider client={queryClient}>
+        <Route component={Lobby} exact path="/lobby"/>
+      </QueryClientProvider>
     </div>
   );
 }
