@@ -6,10 +6,11 @@ import Game from './Game'
 import PlayerInfo from './PlayerInfo'
 
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
-const queryClient = new QueryClient()
 
 
 const Lobby = () => {
+    const [wow, setWow] = useState(false)
+    const [players, setPlayers] = useState([])
 
 
 
@@ -18,17 +19,18 @@ const {push} = useHistory()
 // const [onlinePlayers, setOnlinePlayers] = useState([])
 
 
-
+let users = []
 
 
 const { isLoading, error, data } = useQuery('repoData', () =>
-fetch('http://localhost:4343/players').then(res =>
-  res.json()
+fetch('http://localhost:4343/players').then(res => {
+    res.json()
+    
+}
+  
 )
 )
-
 const id = window.localStorage.getItem('playerId')
-const playerReady = window.localStorage.getItem('playerReady')
 
 const logOut = evt => {
     evt.preventDefault()
@@ -42,7 +44,8 @@ const isReady = evt => {
     evt.preventDefault()
     axios.put(`http://localhost:4343/players/${id}/ready`, {player_ready: true})
     .then(res=>{
-        push('/lobby')
+        // window.location.reload(true)
+
         console.log(res)
     })
     .catch(err=>{
@@ -54,7 +57,8 @@ const notReady = evt => {
     evt.preventDefault()
     axios.put(`http://localhost:4343/players/${id}/not-ready`, {player_ready: false})
     .then(res=>{
-        push('/lobby')
+        // window.location.reload(true)
+
         console.log(res)
     })
     .catch(err=>{
@@ -62,20 +66,36 @@ const notReady = evt => {
     })
 }
 
+useEffect(()=>{
+    axios.get('http://localhost:4343/players')
+    .then(res=>{
+        setPlayers(res.data)
+    })
+    .catch(err=>{
+        console.log(err)
+    })
+}, [])
+
+
+console.log(players)
     return (
         <div>
-            {isLoading ? <p>LOADING</p> : error ? <p>AN ERROR HAS OCCURED</p> : ""}
-            { data && data.map(pl=>{
+            <p>hey</p>
+            {isLoading && <p>LOADING</p>}
+            { error && <p>AN ERROR HAS OCCURED</p>}
+            {players.map(pl=>{
                 return (
                     <p key={pl.id}>{pl.name}- {pl.player_ready ? "Ready" : "Not Ready"}</p>
                 )
             })
         }
-        <QueryClientProvider client={queryClient}>
-            <PlayerInfo/>
-        </QueryClientProvider>
-        {/* <button onClick={logOut}>Log Out</button>
-        <p onClick={isReady}>{data ? "Ready!" : "Ready?"}</p> */}
+        {/* <QueryClientProvider client={queryClient2}>
+            <PlayerInfo setWow={setWow} wow={wow}/>
+        </QueryClientProvider> */}
+        {/* <button onClick={logOut}>Log Out</button>*/}
+        <p onClick={isReady}>{data ? "Ready!" : "Ready?"}</p>
+        <button onClick={notReady}>Nvm, not ready yet</button>
+    <button onClick={logOut}>Log Out</button>
         </div>
     )
 }

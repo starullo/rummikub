@@ -20,7 +20,7 @@ const Login = () => {
         axios.post('http://localhost:4343/auth/login', formValues)
         .then(res=>{
             window.localStorage.setItem('gameToken', res.data.token)
-            window.localStorage.setItem('playerId', res.data.userId)
+            window.localStorage.setItem('playerId', res.data.playerId)
             // window.localStorage.setItem('playerReady', "true")
             push("/lobby")
             console.log(res)
