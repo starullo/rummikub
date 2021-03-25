@@ -21,6 +21,9 @@ const Register = () => {
         console.log(formValues)
         axios.post('http://localhost:4343/auth/register', formValues)
         .then(res=>{
+            window.localStorage.setItem('gameToken', res.data.token)
+            window.localStorage.setItem('playerId', res.data.userId)
+            // window.localStorage.setItem('playerReady', "true")
             push('/lobby')
             console.log(res)
         })
