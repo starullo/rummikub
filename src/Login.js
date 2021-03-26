@@ -17,7 +17,7 @@ const Login = () => {
 
     const handleSubmit = evt => {
         evt.preventDefault();
-        axios.post('http://localhost:4343/auth/login', formValues)
+        axios.post('https://rummikub-be.herokuapp.com/auth/login', formValues)
         .then(res=>{
             window.localStorage.setItem('gameToken', res.data.token)
             window.localStorage.setItem('playerId', res.data.playerId)

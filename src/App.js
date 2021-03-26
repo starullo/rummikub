@@ -1,14 +1,14 @@
-import React, {useState, useEffect} from 'react'
+import React from 'react'
 import {Route, Link} from 'react-router-dom'
 
 import Login from './Login'
 import Register from './Register'
 import Lobby from './Lobby'
-import axiosWithAuth from './AxiosWithAuth'
+// import axiosWithAuth from './AxiosWithAuth'
 import PrivateRoute from './PrivateRoute'
 import Game from './Game'
 
-import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
+import { QueryClient, QueryClientProvider } from 'react-query'
  
 const queryClient = new QueryClient()
 

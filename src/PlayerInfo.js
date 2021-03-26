@@ -5,7 +5,6 @@ import {useHistory} from 'react-router-dom'
 
 const PlayerInfo = (props) => {
     const [ready, setReady] = useState(false)
-    const [players, setPlayers] = useState([])
 
     const {push} = useHistory();
 
@@ -13,7 +12,7 @@ const PlayerInfo = (props) => {
     
 
     const { isLoading, error, data } = useQuery('playerData', () =>
-    fetch(`http://localhost:4343/players/${id}`).then(res =>
+    fetch(`https://rummikub-be.herokuapp.com/players/${id}`).then(res =>
       res.json()
     )
     )
@@ -30,7 +29,7 @@ const PlayerInfo = (props) => {
     
     const isReady = evt => {
         evt.preventDefault()
-        axios.put(`http://localhost:4343/players/${id}/ready`, {player_ready: true})
+        axios.put(`https://rummikub-be.herokuapp.com/players/${id}/ready`, {player_ready: true})
         .then(res=>{
             // window.location.reload(true)
             setReady(true)
@@ -44,7 +43,7 @@ const PlayerInfo = (props) => {
     
     const notReady = evt => {
         evt.preventDefault()
-        axios.put(`http://localhost:4343/players/${id}/not-ready`, {player_ready: false})
+        axios.put(`https://rummikub-be.herokuapp.com/players/${id}/not-ready`, {player_ready: false})
         .then(res=>{
             // window.location.reload(true)
             setReady(false)
@@ -57,7 +56,7 @@ const PlayerInfo = (props) => {
     }
 
     useEffect(()=>{
-        axios.get('http://localhost:4343/players')
+        axios.get('https://rummikub-be.herokuapp.com/players')
         .then(res=>{
             setPlayers(res.data)
         })

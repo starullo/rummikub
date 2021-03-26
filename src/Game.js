@@ -1,11 +1,11 @@
 import axios from 'axios'
-import React, {useState, useEffect} from 'react'
+import React, { useEffect} from 'react'
 
 
 const Game = () => {
 
 useEffect(()=>{
-    axios.post('http://localhost:4343/games', {})
+    axios.post('https://rummikub-be.herokuapp.com/games', {})
     .then(res=>{
         console.log(res)
     })
