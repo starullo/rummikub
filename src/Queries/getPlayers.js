@@ -1,25 +1,29 @@
 import {useState, useEffect} from 'react'
-import {  useQuery, useIsFetching } from 'react-query'
+import {  useQuery } from 'react-query'
 
-const getPlayers = async () =>{
-    const res = await fetch('https://rummikub-be.herokuapp.com/players')
-    return res.json()
-        
-}
+
 
 const PlayersHook = () => {
     const [players, setPlayers] = useState(null)
+    const [wow, setWow] = useState(false)
+    const getPlayers = async () =>{
+        const res = await fetch('https://rummikub-be.herokuapp.com/players')
+        setWow(!wow)
+        return res.json()
+            
+    }
+    
 
-    const isFetching = useIsFetching();
 
     const q = useQuery('repoData', getPlayers)
 
     useEffect(()=>{
         setPlayers(q.data)
+        setWow(!wow)
     }, [q.data])
 
     const playersStatus = q.status
-    return [players, playersStatus, isFetching]
+    return [players, playersStatus]
 }
 
 export default PlayersHook

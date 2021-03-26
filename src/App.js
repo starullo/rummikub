@@ -4,9 +4,6 @@ import {Route, Link} from 'react-router-dom'
 import Login from './Login'
 import Register from './Register'
 import Lobby from './Lobby'
-// import axiosWithAuth from './AxiosWithAuth'
-import PrivateRoute from './PrivateRoute'
-import Game from './Game'
 
 import { QueryClient, QueryClientProvider } from 'react-query'
  
@@ -25,11 +22,9 @@ function App() {
       <Route component={Login} exact path="/login"/>
       <Route component={Register} exact path="/register"/>
       <QueryClientProvider client={queryClient}>
-        <PrivateRoute component={Lobby} exact path="/lobby"/>
+        <Route component={Lobby} exact path="/lobby"/>
       </QueryClientProvider>
-      <PrivateRoute component={Game} exact path="/game"/>
     </div>
-
   );
 }
 
