@@ -1,6 +1,8 @@
 import {useState, useEffect} from 'react'
 import {  useQuery } from 'react-query'
 
+const db = "http://localhost:4343"
+
 
 
 const PlayersHook = () => {

@@ -4,6 +4,8 @@ import {useHistory} from 'react-router-dom'
 
 const initialFormValues = {name: '', password: ''}
 
+const db = "http://localhost:4343"
+
 const Login = () => {
 
     const [formValues, setFormValues] = useState(initialFormValues)
@@ -15,9 +17,11 @@ const Login = () => {
         setFormValues({...formValues, [evt.target.name]: evt.target.value})
     }
 
+
+
     const handleSubmit = evt => {
         evt.preventDefault();
-        axios.post('https://rummikub-be.herokuapp.com/auth/login', formValues)
+        axios.post(`${db}/auth/login`, formValues)
         .then(res=>{
             window.localStorage.setItem('gameToken', res.data.token)
             window.localStorage.setItem('playerId', res.data.playerId)

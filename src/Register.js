@@ -2,6 +2,8 @@ import React, {useState} from 'react'
 import axios from "axios"
 import {useHistory} from 'react-router-dom'
 
+const db = "http://localhost:4343"
+
 const initialFormValues = {name: "", password: ""}
 
 const Register = () => {
@@ -19,7 +21,7 @@ const Register = () => {
     const handleSubmit = evt => {
         evt.preventDefault()
         console.log(formValues)
-        axios.post('https://rummikub-be.herokuapp.com/auth/register', formValues)
+        axios.post(`${db}/auth/register`, formValues)
         .then(res=>{
             window.localStorage.setItem('gameToken', res.data.token)
             window.localStorage.setItem('playerId', res.data.playerId)
@@ -31,6 +33,8 @@ const Register = () => {
             console.log(err.message)
         })
     }
+
+    
 
     return (
         <div>
