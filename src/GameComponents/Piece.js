@@ -6,13 +6,17 @@ const Div = styled.div`
 text-align: center;
 border: solid black 1px;
 
+&:hover {
+    cursor: pointer;
+}
+
 .invisible {
-    color: transparent;
+    opacity: 0;
 }
 
 `
 
-const Piece = ({piece, curPlay, setCurPlay}) => {
+const Piece = ({piece, curPlay, setCurPlay, dragStart}) => {
 
     const addToPlay = evt => {
         evt.preventDefault()
@@ -27,8 +31,10 @@ const Piece = ({piece, curPlay, setCurPlay}) => {
     const pieceInPlay = curPlay.find(obj=>obj.id===piece.id);
 
 
+
+
     return (
-        <Div>
+            <Div draggable="true">
         <p className={pieceInPlay ? "" : "invisible"}>PLAYED</p>
         <p style={piece.color === "black" ? {color: "black"} : piece.color === "red" ? {color: "red"} : piece.color === "orange" ? {color: "orange"} : {color: "blue"}}key={piece.id}>{piece.value}</p>
         {!pieceInPlay && <button onClick={addToPlay}>Add Piece</button>}<br/>

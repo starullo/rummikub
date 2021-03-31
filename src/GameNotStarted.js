@@ -1,20 +1,25 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import axios from 'axios'
 import {useParams, useHistory} from 'react-router-dom'
 import {useQuery} from 'react-query'
+
+import GameStarted from './GameStarted'
 
 const db = "http://localhost:4343"
 
 
 const GameNotStarted = () => {
 
+
+
+
     const {gameId} = useParams();
+
 
     const [ready, setReady] = useState(false)
 
     const playerId = Number(window.localStorage.getItem('playerId'))
 
-    const gpid = window.localStorage.getItem('gpid')
 
     const {push} = useHistory();
 
@@ -25,7 +30,6 @@ const GameNotStarted = () => {
 
     const getGameInfo = async () => {
         const res = await fetch(`${db}/games/${gameId}`)
-        console.log('fetching')
         return res.json()
     }
 
@@ -33,7 +37,6 @@ const GameNotStarted = () => {
 
     const getPlayerInfo = async () => {
         const res = await fetch(`${db}/games/${gameId}/game-players`)
-        console.log('fetching')
         return res.json()
     }
 
@@ -41,8 +44,15 @@ const GameNotStarted = () => {
 
     function readyToggle(evt) {
         evt.preventDefault()
-
-        axios.put(`${db}/games/${gameId}/game-players/${gpid}`, {ready: !pFinder(playerId).ready})
+        let ready;
+        if (pFinder(playerId) === 1) {
+            ready = false;
+            window.localStorage.setItem("gameStarted", false)
+        } else {
+            ready = true;
+            window.localStorage.setItem("gameStarted", false)
+        }
+        axios.put(`${db}/games/${gameId}/game-players`, {ready, player_id: playerId})
         .then(res=>{
             console.log(res)
         })
@@ -56,9 +66,7 @@ const GameNotStarted = () => {
 
 
 
-console.log(playersInfo, gameInfo)
 
-const wow = window.localStorage.getItem('gpid')
 
 
 const leaveGame = evt => {
@@ -66,7 +74,7 @@ const leaveGame = evt => {
     axios.delete(`${db}/games/${gameId}/game-players/${playerId}`)
     .then(res=>{
         console.log(res)
-        window.localStorage.removeItem('gpid')
+        window.localStorage.removeItem('gameId')
         push('/lobby')
     })
     .catch(err=>{
@@ -74,34 +82,50 @@ const leaveGame = evt => {
     })
 }
 
-if (playersInfo && playersStatus === "success" && playersInfo.length > 1 && playersInfo.every(p=>p.ready)) {
-    if (playerId === 1) {
-        axios.get(`${db}/play/${gameId}`)
-        .then(res=>{
-            push(`/game/${gameId}`)
-        })
-        .catch(err=>{
-            console.log(err)
-        })
-    }
-    else {
-        push(`/game/${gameId}`)
-    }
-    
-}
+
+
 
 function pFinder(id) {
+    if (playersInfo) {
     return playersInfo.find(obj=>{
         return obj.player_id === id
     })
 }
+}
+
+
 
 let playerReady;
 if (playersInfo && playersStatus === "success" && playersInfo.filter(p=>{ return p.id === playerId})[0]) {
-    playerReady = playersInfo.filter(p=>{ console.log(p.player_id, playerId); return p.id === playerId})[0].ready
+    playerReady = playersInfo.filter(p=>{  return p.id === playerId})[0].ready
 }
 
-console.log(playerReady)
+
+
+const playersReady = playersInfo && playersStatus === "success" && playersInfo.length > 1 && playersInfo.every(p=>p.ready === 1)
+
+// useEffect(()=>{
+//     if (playersReady) {
+//         axios.get(`${db}/play/${gameId}/firstdraw`)
+//         .then(res=>{
+//             push(`/game/${gameId}`)
+//         })
+//         .catch(err=>{
+//             push(`/game/${gameId}`)
+//             console.log(err.message)
+//         })
+//     }
+// }, [playersReady])
+
+console.log(playersInfo)
+
+if (playersReady) {
+
+    push(`/game/${gameId}`)
+    }
+    
+
+
     return (
         <div>
         {playersStatus === "loading" && <p>LOADING</p>}

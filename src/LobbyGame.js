@@ -19,20 +19,19 @@ const LobbyGame = (props) => {
 
 
     const getGameInfo = async () => {
-        const res = await fetch(`${db}/games/${props.id}/game-players`)
-        console.log('fetching')
+        const res = await fetch(`${db}/games/${props.id}/`)
         return res.json()
     }
 
     const {data: gameInfo, status: gameStatus} = useQuery(`game${props.id}Data`, getGameInfo, {refetchInterval: 10000})
 
+
     const joinGame = evt => {
         evt.preventDefault();
-            console.log(id)
             axios.post(`${db}/games/${props.id}/game-players`, {player_id: id, game_id: props.id})
             .then(res=>{
                 console.log(res)
-                window.localStorage.setItem('gpid', res.data.id)
+                window.localStorage.setItem('gameId', props.id)
                 push(`game-room/${props.id}`)
             })
             .catch(err=>{
@@ -50,15 +49,15 @@ const LobbyGame = (props) => {
     //     })
     // }
 
-    if (gameStatus === "success" && gameInfo && gameInfo.length < 1) {
-        axios.delete(`${db}/games/${props.id}`)
-        .then(res=>{
-            console.log(res)
-        })
-        .catch(err=>{
-            console.log(err)
-        })
-    }
+    // if (gameStatus === "success" && gameInfo && gameInfo.length < 1) {
+    //     axios.delete(`${db}/games/${props.id}`)
+    //     .then(res=>{
+    //         console.log(res)
+    //     })
+    //     .catch(err=>{
+    //         console.log(err)
+    //     })
+    // }
 
     return (
         <QueryClientProvider client={queryClient}>
@@ -68,13 +67,13 @@ const LobbyGame = (props) => {
                 <p>Players:</p>
                 {gameStatus === "loading" && "LOADING"}
                 {gameStatus === "error" && "ERROR"}
-                {gameStatus === "success" && gameInfo.map(player=>{
+                {gameStatus === "success" && gameInfo && typeof gameInfo === "array" && gameInfo.map(player=>{
                     return (
                         <p key={player.id}>{player.name}</p>
                     )
                 })}
             </div>
-            <button onClick={joinGame} key={props.id + id} style={{display: "inline"}}>Join this game</button>
+            <button onClick={joinGame} style={{display: "inline"}}>Join this game</button>
         </div>
         </QueryClientProvider>
     )

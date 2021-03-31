@@ -13,23 +13,18 @@ const GameRoom = () => {
 
     const getGameInfo = async () => {
         const res = await fetch(`${db}/games/${id}`)
-        console.log('fetching')
         return res.json()
     }
 
     const {data: gameInfo, status: gameStatus} = useQuery(`lobbyGame${id}Data`, getGameInfo, {refetchInterval: 10000})
 
-    console.log(id)
 
     const getPlayerInfo = async () => {
         const res = await fetch(`${db}/games/${id}/game-players`)
-        console.log('fetching')
         return res.json()
     }
 
     const {data: playersInfo, status: playersStatus} = useQuery(`lobbyGame${id}PlayersData`, getPlayerInfo, {refetchInterval: 10000})
-
-    console.log(gameInfo, playersInfo)
 
     return (
         <div>

@@ -20,10 +20,8 @@ const Register = () => {
 
     const handleSubmit = evt => {
         evt.preventDefault()
-        console.log(formValues)
         axios.post(`${db}/auth/register`, formValues)
         .then(res=>{
-            window.localStorage.setItem('gameToken', res.data.token)
             window.localStorage.setItem('playerId', res.data.playerId)
             // window.localStorage.setItem('playerReady', "true")
             push('/lobby')

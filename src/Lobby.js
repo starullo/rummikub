@@ -20,6 +20,114 @@ const queryClients = {};
  
 const queryClient = new QueryClient()
 
+let p = [
+    {value: 0, color: "red"},
+    {value: 0, color: "blue"},
+    {value: 1, color: "red"},
+    {value: 1, color: "blue"},
+    {value: 1, color: "orange"},
+    {value: 1, color: "black"},
+    {value: 2, color: "red"},
+    {value: 2, color: "blue"},
+    {value: 2, color: "orange"},
+    {value: 2, color: "black"},
+    {value: 3, color: "red"},
+    {value: 3, color: "blue"},
+    {value: 3, color: "orange"},
+    {value: 3, color: "black"},
+    {value: 4, color: "red"},
+    {value: 4, color: "blue"},
+    {value: 4, color: "orange"},
+    {value: 4, color: "black"},
+    {value: 5, color: "red"},
+    {value: 5, color: "blue"},
+    {value: 5, color: "orange"},
+    {value: 5, color: "black"},
+    {value: 6, color: "red"},
+    {value: 6, color: "blue"},
+    {value: 6, color: "orange"},
+    {value: 6, color: "black"},
+    {value: 7, color: "red"},
+    {value: 7, color: "blue"},
+    {value: 7, color: "orange"},
+    {value: 7, color: "black"},
+    {value: 8, color: "red"},
+    {value: 8, color: "blue"},
+    {value: 8, color: "orange"},
+    {value: 8, color: "black"},
+    {value: 9, color: "red"},
+    {value: 9, color: "blue"},
+    {value: 9, color: "orange"},
+    {value: 9, color: "black"},
+    {value: 10, color: "red"},
+    {value: 10, color: "blue"},
+    {value: 10, color: "orange"},
+    {value: 10, color: "black"},
+    {value: 11, color: "red"},
+    {value: 11, color: "blue"},
+    {value: 11, color: "orange"},
+    {value: 11, color: "black"},
+    {value: 12, color: "red"},
+    {value: 12, color: "blue"},
+    {value: 12, color: "orange"},
+    {value: 12, color: "black"},
+    {value: 13, color: "red"},
+    {value: 13, color: "blue"},
+    {value: 13, color: "orange"},
+    {value: 13, color: "black"},
+    {value: 1, color: "red"},
+    {value: 1, color: "blue"},
+    {value: 1, color: "orange"},
+    {value: 1, color: "black"},
+    {value: 2, color: "red"},
+    {value: 2, color: "blue"},
+    {value: 2, color: "orange"},
+    {value: 2, color: "black"},
+    {value: 3, color: "red"},
+    {value: 3, color: "blue"},
+    {value: 3, color: "orange"},
+    {value: 3, color: "black"},
+    {value: 4, color: "red"},
+    {value: 4, color: "blue"},
+    {value: 4, color: "orange"},
+    {value: 4, color: "black"},
+    {value: 5, color: "red"},
+    {value: 5, color: "blue"},
+    {value: 5, color: "orange"},
+    {value: 5, color: "black"},
+    {value: 6, color: "red"},
+    {value: 6, color: "blue"},
+    {value: 6, color: "orange"},
+    {value: 6, color: "black"},
+    {value: 7, color: "red"},
+    {value: 7, color: "blue"},
+    {value: 7, color: "orange"},
+    {value: 7, color: "black"},
+    {value: 8, color: "red"},
+    {value: 8, color: "blue"},
+    {value: 8, color: "orange"},
+    {value: 8, color: "black"},
+    {value: 9, color: "red"},
+    {value: 9, color: "blue"},
+    {value: 9, color: "orange"},
+    {value: 9, color: "black"},
+    {value: 10, color: "red"},
+    {value: 10, color: "blue"},
+    {value: 10, color: "orange"},
+    {value: 10, color: "black"},
+    {value: 11, color: "red"},
+    {value: 11, color: "blue"},
+    {value: 11, color: "orange"},
+    {value: 11, color: "black"},
+    {value: 12, color: "red"},
+    {value: 12, color: "blue"},
+    {value: 12, color: "orange"},
+    {value: 12, color: "black"},
+    {value: 13, color: "red"},
+    {value: 13, color: "blue"},
+    {value: 13, color: "orange"},
+    {value: 13, color: "black"}]
+
 // const getPlayers = async () =>{
 //     const res = await fetch('${db}/players')
 //     console.log('fetching')
@@ -36,7 +144,6 @@ const getLobbyPlayers = async () => {
 
 const getGames = async () => {
     const res = await fetch(`${db}/games/lobby`)
-    console.log(res)
     return res.json()
 }
 
@@ -65,6 +172,7 @@ const logOut = evt => {
     evt.preventDefault()
         window.localStorage.removeItem('gameToken')
         window.localStorage.removeItem('playerId')
+        window.localStorage.removeItem('gameId')
         push('/login')
 
 }
@@ -117,15 +225,14 @@ const startNewGame = evt => {
     axios.post(`${db}/games/lobby`, {player_id: id})
     .then(res=>{
         console.log(res)
-        window.localStorage.setItem('gpid', res.data[1])
-        push(`/game-room/${res.data[0].id}`)
+        window.localStorage.setItem('gameId', res.data.id)
+        push(`/game-room/${res.data.id}`)
     })
     .catch(err=>{
         console.log(err.message)
     })
 }
 
-console.log(games)
 
     return (
         <div>

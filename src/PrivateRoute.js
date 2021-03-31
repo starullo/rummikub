@@ -8,7 +8,6 @@ const token = window.localStorage.getItem('gameToken')
 let decoded;
 if (token) {
     decoded = jwt_decode(token)
-    console.log(decoded)
 }
 
 
