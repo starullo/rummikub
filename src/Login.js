@@ -28,7 +28,6 @@ const Login = () => {
             push("/lobby")
         })
         .catch(err=>{
-            console.log(err.message)
         })
     }
 

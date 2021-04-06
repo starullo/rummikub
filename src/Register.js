@@ -25,10 +25,9 @@ const Register = () => {
             window.localStorage.setItem('playerId', res.data.playerId)
             // window.localStorage.setItem('playerReady', "true")
             push('/lobby')
-            console.log(res)
+             (res)
         })
         .catch(err=>{
-            console.log(err.message)
         })
     }
 

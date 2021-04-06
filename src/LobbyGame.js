@@ -28,48 +28,46 @@ const LobbyGame = (props) => {
 
     const joinGame = evt => {
         evt.preventDefault();
-            axios.post(`${db}/games/${props.id}/game-players`, {player_id: id, game_id: props.id})
+            axios.post(`${db}/games/${props.id}/${id}/game-players`, {player_id: id, game_id: props.id})
             .then(res=>{
-                console.log(res)
                 window.localStorage.setItem('gameId', props.id)
                 push(`game-room/${props.id}`)
             })
             .catch(err=>{
-                console.log(err)
             })}  
 
     // const startGame = evt => {
     //     evt.preventDefault()
     //     axios.put(`${db}/games/${props.id}/start`, {})
     //     .then(res=>{
-    //         console.log(res)
+    //          (res)
     //     })
     //     .catch(err=>{
-    //         console.log(err.message)
+    //          (err.message)
     //     })
     // }
 
     // if (gameStatus === "success" && gameInfo && gameInfo.length < 1) {
     //     axios.delete(`${db}/games/${props.id}`)
     //     .then(res=>{
-    //         console.log(res)
+    //          (res)
     //     })
     //     .catch(err=>{
-    //         console.log(err)
+    //          (err)
     //     })
     // }
 
     return (
         <QueryClientProvider client={queryClient}>
-        <div style={{border: "solid black 1px", paddingBottom: "3%", marginBottom: "5%"}} key={props.id + 2 / id + 2}>
+        <div style={{border: "solid black 1px", paddingBottom: "3%", marginBottom: "5%"}} key={props.id + 2 / id + 2 * Math.random() * 1000 * Math.random() / Math.random()}>
             <p>Game# {props.id}</p>
             <div>
                 <p>Players:</p>
                 {gameStatus === "loading" && "LOADING"}
                 {gameStatus === "error" && "ERROR"}
-                {gameStatus === "success" && gameInfo && typeof gameInfo === "array" && gameInfo.map(player=>{
+                {gameStatus === "success" && gameInfo && gameInfo.map(player=>{
                     return (
-                        <p key={player.id}>{player.name}</p>
+                        <p key={player.id * Math.random() * 1000 * Math.random() / Math.random()}>{player.name}</p>
                     )
                 })}
             </div>

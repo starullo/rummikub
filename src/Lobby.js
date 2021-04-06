@@ -1,24 +1,18 @@
 import axios from 'axios'
-import React, {useState, useEffect} from 'react'
+import React from 'react'
 // import jwt_decode from "jwt-decode"
 import {useHistory} from 'react-router-dom'
 
 import LobbyGame from './LobbyGame'
 
-
-import PlayerHook from './Queries/getPlayerInfo'
 // import PlayersHook from './Queries/getPlayers'
 
 
-import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
+import { useQuery } from 'react-query'
 
-import {Route} from 'react-router-dom'
 
 const db = "http://localhost:4343"
 
-const queryClients = {};
- 
-const queryClient = new QueryClient()
 
 let p = [
     {value: 0, color: "red"},
@@ -130,17 +124,17 @@ let p = [
 
 // const getPlayers = async () =>{
 //     const res = await fetch('${db}/players')
-//     console.log('fetching')
+//      ('fetching')
 //     return res.json()
         
 // }
 
 
 
-const getLobbyPlayers = async () => {
-    const res = await fetch(`${db}/games/lobby`)
-    return res.json()
-}
+// const getLobbyPlayers = async () => {
+//     const res = await fetch(`${db}/games/lobby`)
+//     return res.json()
+// }
 
 const getGames = async () => {
     const res = await fetch(`${db}/games/lobby`)
@@ -151,6 +145,8 @@ const getGames = async () => {
 
 
 const Lobby = () => {
+
+    const playerId = window.localStorage.getItem('playerId')
 
     // const [games, setGames] = useState([])
 
@@ -168,35 +164,35 @@ const {push} = useHistory()
 
 const id = window.localStorage.getItem('playerId')
 
-const logOut = evt => {
-    evt.preventDefault()
-        window.localStorage.removeItem('gameToken')
-        window.localStorage.removeItem('playerId')
-        window.localStorage.removeItem('gameId')
-        push('/login')
+// const logOut = evt => {
+//     evt.preventDefault()
+//         window.localStorage.removeItem('gameToken')
+//         window.localStorage.removeItem('playerId')
+//         window.localStorage.removeItem('gameId')
+//         push('/login')
 
-}
+// }
 
-const joinGame = evt => {
-    evt.preventDefault()
-    axios.put(`${db}/games`, {player_id: id})
-    .then(res=>{
-        console.log(res)
-    })
-    .catch(err=>{
-        console.log(err)
-    })
-}
+// const joinGame = evt => {
+//     evt.preventDefault()
+//     axios.put(`${db}/games`, {player_id: id})
+//     .then(res=>{
+//          (res)
+//     })
+//     .catch(err=>{
+//          (err)
+//     })
+// }
 
 // const isReady = evt => {
 //     evt.preventDefault()
 //     axios.put(`${db}/players/${id}/ready`, {player_ready: true})
 //     .then(res=>{
 //         window.location.reload(true)
-//         console.log(res)
+//          (res)
 //     })
 //     .catch(err=>{
-//         console.log(err)
+//          (err)
 //     })
 // }
 
@@ -205,10 +201,10 @@ const joinGame = evt => {
 //     axios.put(`${db}/players/${id}/not-ready`, {player_ready: false})
 //     .then(res=>{
 //         window.location.reload(true)
-//         console.log(res)
+//          (res)
 //     })
 //     .catch(err=>{
-//         console.log(err)
+//          (err)
 //     })
 // }
 
@@ -222,14 +218,12 @@ const joinGame = evt => {
 // let gameId;
 const startNewGame = evt => {
     evt.preventDefault()
-    axios.post(`${db}/games/lobby`, {player_id: id})
+    axios.post(`${db}/games/lobby/${playerId}`, {player_id: id})
     .then(res=>{
-        console.log(res)
         window.localStorage.setItem('gameId', res.data.id)
         push(`/game-room/${res.data.id}`)
     })
     .catch(err=>{
-        console.log(err.message)
     })
 }
 
@@ -238,7 +232,7 @@ const startNewGame = evt => {
         <div>
             {gamesStatus === "error" && <p>ERROR</p>}
             {gamesStatus === "loading" && <p>LOADING</p>}
-            {gamesStatus === "success" && games && games.map(game=>{
+            {gamesStatus === "success" && games && games.filter(g=>g.in_progress === Number(0) && g.completed === Number(0)).map(game=>{
                 return (
                     <LobbyGame id={game.id} />
                 )

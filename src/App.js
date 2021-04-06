@@ -11,7 +11,7 @@ import GameStarted from './GameStarted'
  
 const queryClient = new QueryClient()
 
-const db = "http://localhost:4343"
+// const db = "http://localhost:4343"
 
 function App() {
 
