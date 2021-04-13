@@ -18,11 +18,12 @@ border: solid black 1px
 
 const db = "http://localhost:4343"
 
-const BoardGroup = ({play, boardGroupsArray, setBoardGroupsArray, tiles, boardInfo, handleDragStart, idsInPlay, curPlay, setCurPlay, setIdsInPlay, isValidPlay, pps_to_delete, setpps_to_delete}) => {
+const BoardGroup = ({play, boardGroupsArray, setBoardGroupsArray, tiles, boardInfo, handleDragStart, idsInPlay, curPlay, setCurPlay, setIdsInPlay, isValidPlay, pps_to_delete, setpps_to_delete, boardStatus, colorsMatch}) => {
 
     const [group, setGroup] = useState([])
     const {gameId} = useParams();
     const playerId = window.localStorage.getItem('playerId')
+    const [wow, setWow] = useState(false)
     
 
 
@@ -58,10 +59,10 @@ const BoardGroup = ({play, boardGroupsArray, setBoardGroupsArray, tiles, boardIn
         e.dataTransfer.dropEffect = "move";
       };
 
-      useEffect(()=>{
+    //   useEffect(()=>{
       
-        setGroup(play)
-      }, [])
+    //     setGroup(play)
+    //   }, [])
  
 
     //   useEffect(()=>{
@@ -94,13 +95,11 @@ const BoardGroup = ({play, boardGroupsArray, setBoardGroupsArray, tiles, boardIn
         }
         const newPiece = {id: Number(newId), color, value: newValue, player_id: Number(playerId), game_id: Number(gameId)}
         // let oldGroup = group.filter(obj=>Number(obj.id) !== Number(newId))
-        console.log(isValidPlay([...group, newPiece].sort((a,b)=>a.value < b.value ? -1 : a.value > b.value ? 1 : 0)))
-        if (isValidPlay([...group, newPiece].sort((a,b)=>a.value < b.value ? -1 : a.value > b.value ? 1 : 0))) {
-            console.log('wow', newPiece)
-            let oldGroup = [...group]
-            oldGroup.push(newPiece)
-            setGroup(oldGroup.sort((a,b)=>a<b?-1:a>b?1:0))
-            
+        if (isValidPlay([...group, newPiece])) {
+            let oldGroup = [...group, newPiece]
+            setGroup(oldGroup)
+            play.push(newPiece)
+            setWow(!wow)
             // const newThangs = group.filter(p=>p.id !== id)
             // const newIds = newThangs.map(p=>Number(p.id))
             // setIdsInPlay([...idsInPlay, Number(newId)])
@@ -109,23 +108,23 @@ const BoardGroup = ({play, boardGroupsArray, setBoardGroupsArray, tiles, boardIn
             setBoardGroupsArray(oldBoardGroupsArray)
         }
 
+        
       }
-      let firstColor; 
-      let colorsMatch;
-      if (group.length > 0) {
-        firstColor = play[0].color;
-        colorsMatch = play.every(obj=>obj.color === firstColor)
-      }
+      useEffect(()=>{
+        setGroup(play)
+      }, [])
 
+
+      
     return (
         <Div onDragEnter={handleDragEnter} onDragOver={handleDragOver} onDragLeave={handleDragLeave} onDrop={handleDrop3}>
-            {!colorsMatch && play.length > 0 && group.map(piece=>{
+            {!colorsMatch ? group.map(piece=>{
                 return (
                     
                     <Piece pieceInPlay={idsInPlay.includes(piece.id)} handleDragStart={handleDragStart2} draggable="true" key={piece.id * Math.random() * 1000 * Math.random()} piece={piece} curPlay={curPlay} setCurPlay={setCurPlay}/>
                 )
-            })}
-            { colorsMatch && play.length > 0 && group.sort((a,b)=>a.value < b.value ? -1 : a.value > b.value ? 1 : 0).map(piece=>{
+            })
+             : group.sort((a,b)=>a.value < b.value ? -1 : a.value > b.value ? 1 : 0).map(piece=>{
                 return (
                     
                     <Piece pieceInPlay={idsInPlay.includes(piece.id)} handleDragStart={handleDragStart2} draggable="true" key={piece.id * Math.random() * 1000 * Math.random()} piece={piece} curPlay={curPlay} setCurPlay={setCurPlay}/>

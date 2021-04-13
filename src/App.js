@@ -8,6 +8,7 @@ import Lobby from './Lobby'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import GameNotStarted from './GameNotStarted'
 import GameStarted from './GameStarted'
+import PlayerTurn from './GameComponents/PlayerTurn'
  
 const queryClient = new QueryClient()
 
@@ -29,6 +30,7 @@ function App() {
       <Route component={Lobby} exact path="/lobby"/>
       <Route component={GameNotStarted} exact path="/game-room/:gameId"/>
       <Route component={GameStarted} exact path="/game/:gameId"/>
+      <Route component={PlayerTurn} exact path="/playerturn"/>
     </div>
     </QueryClientProvider>
   );

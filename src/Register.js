@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import axios from "axios"
 import {useHistory} from 'react-router-dom'
 
@@ -7,7 +7,15 @@ const db = "http://localhost:4343"
 const initialFormValues = {name: "", password: ""}
 
 const Register = () => {
-
+useEffect(()=>{
+    axios.get(`${db}/pieces`)
+    .then(res=>{
+        console.log(res)
+    })
+    .catch(err=>{
+        console.log(err)
+    })
+})
     
     const [formValues, setFormValues] = useState(initialFormValues)
 

@@ -50,10 +50,10 @@ p {
 
 const db = "http://localhost:4343"
 
-const Hand = ({ pps_to_delete, playersInfo, playersStatus, curHand, setCurHand, curPlay, setCurPlay, playersHand, playersHandStatus, fuckingId, setFuckingId, theNewCurPlay, setTheNewCurPlay, idsInPlay, setIdsInPlay, modal, setModal, formValues, setFormValues, handleDrop, handleDragOver, handleDragEnter, handleDragLeave, handleDragStart, drawPiece, postPlay, playerHand, playerHandStatus}) => {
+const Hand = ({ pps_to_delete, playersInfo, playersStatus, curHand, setCurHand, curPlay, setCurPlay, playersHand, playersHandStatus, fuckingId, setFuckingId, theNewCurPlay, setTheNewCurPlay, idsInPlay, setIdsInPlay, modal, setModal, formValues, setFormValues, handleDrop, handleDragOver, handleDragEnter, handleDragLeave, handleDragStart, drawPiece, postPlay, playerHand}) => {
 
 
-
+console.log(playerHand)
 
 
 
@@ -90,21 +90,18 @@ const Hand = ({ pps_to_delete, playersInfo, playersStatus, curHand, setCurHand, 
 
 
     let numTiles = 0
-    if (playerHandStatus === "success" && playerHand) {
         for (let i = 0; i < playerHand.length; i++) {
             if (playerHand[i].player_id === Number(playerId)) {
                  numTiles++;
             }
-        }
+        
     }
 
 
 
     return (
         <div>
-        {/* {playerHandStatus === "loading" && <p>LOADING YOUR HAND</p>}
-        {playerHandStatus === "error" && <p>ERROR GETTING YOUR HAND</p>} */}
-        {playerHandStatus === "success" && playerHand && <p>{playerHand.length} tiles left</p>}
+        <p>{playerHand.length} tiles left</p>
         <button onClick={drawPiece}>Draw</button>
             <button onClick={postPlay}>Play Hand</button>
             <button onClick={e=>{e.preventDefault();window.location.reload()}}>Restart Turn</button>
@@ -123,7 +120,7 @@ const Hand = ({ pps_to_delete, playersInfo, playersStatus, curHand, setCurHand, 
       onDragOver={handleDragOver}
       onDragEnter={e => handleDragEnter(e)}
       onDragLeave={e => handleDragLeave(e)}>
-        {playerHandStatus === "success" && playerHand && playerHand.filter(p=>{return !pps_to_delete.includes(p.id) && p.player_id === Number(playerId)}).map(piece=>{
+        {playerHand.filter(p=>{return !pps_to_delete.includes(p.id) && p.player_id === Number(playerId)}).map(piece=>{
            
                 return (
                     <GamePiece pieceInPlay={idsInPlay.includes(piece.id)} handleDragStart={handleDragStart} draggable="true" key={piece.id * Math.random() * 1000 * Math.random() / Math.random()} id={"pp" + piece.id} piece={piece} curPlay={curPlay} setCurPlay={setCurPlay} />

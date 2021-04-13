@@ -33,7 +33,6 @@ const Piece = ({piece, curPlay, setCurPlay, handleDragStart, pieceInPlay}) => {
 
 
 
-
     return (
             <Div style={pieceInPlay ? {display: "none"} : {display: "default"}}>
         <p draggable="true" onDragStart={handleDragStart} style={piece.value === 0 ? {color: "purple"} : piece.color === "black" ? {color: "black"} : piece.color === "red" ? {color: "red"} : piece.color === "orange" ? {color: "orange"} : {color: "blue"}} id={piece.id}>{piece.value === 0 ? "WILD" : piece.value}</p>
